@@ -5,9 +5,15 @@ const Navbar = () => {
   return (
     <header>
       <nav>
-        <NavLink to="/">Home</NavLink>
-        <NavLink to="/store">Store</NavLink>
-        <NavLink to="/about">About</NavLink>
+        <NavLink className="nav-links" to="/">
+          Home
+        </NavLink>
+        <NavLink className="nav-links" to="/store">
+          Store
+        </NavLink>
+        <NavLink className="nav-links" to="/about">
+          About
+        </NavLink>
       </nav>
       <button className="btn-cart">
         <img src={cart} alt="" />
