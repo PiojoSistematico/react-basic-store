@@ -1,6 +1,7 @@
 import React from "react";
 import star from "../assets/star-regular.svg";
 import formatCurrency from "../utilities/formatCurrency";
+import AddItem from "./AddItem";
 
 type ItemProps = {
   category: string;
@@ -10,6 +11,7 @@ type ItemProps = {
   price: number;
   rating: { count: number; rate: number };
   title: string;
+  setTotalItems: (number: number) => void;
 };
 
 const StoreItem: React.FunctionComponent<ItemProps> = ({
@@ -20,6 +22,7 @@ const StoreItem: React.FunctionComponent<ItemProps> = ({
   price,
   rating,
   title,
+  setTotalItems,
 }) => {
   return (
     <div className="item-card">
@@ -36,6 +39,7 @@ const StoreItem: React.FunctionComponent<ItemProps> = ({
           </div>
         </div>
       </div>
+      <AddItem setTotalItems={setTotalItems}></AddItem>
     </div>
   );
 };

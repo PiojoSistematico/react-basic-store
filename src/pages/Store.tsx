@@ -1,7 +1,7 @@
 import StoreItem from "../components/StoreItem";
 
 type StoreProps = {
-  items: {
+  itemsArray: {
     category: string;
     description: string;
     id: number;
@@ -10,15 +10,23 @@ type StoreProps = {
     rating: { count: number; rate: number };
     title: string;
   }[];
+  setTotalItems: (number: number) => void;
 };
 
-const Store: React.FunctionComponent<StoreProps> = ({ items }) => {
+const Store: React.FunctionComponent<StoreProps> = ({
+  itemsArray,
+  setTotalItems,
+}) => {
   return (
     <section className="store-section">
       <h1>Store</h1>
       <section className="items-section">
-        {items.map((elem, index) => (
-          <StoreItem key={index} {...elem}></StoreItem>
+        {itemsArray.map((elem, index) => (
+          <StoreItem
+            key={index}
+            setTotalItems={setTotalItems}
+            {...elem}
+          ></StoreItem>
         ))}
       </section>
     </section>
