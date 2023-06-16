@@ -10,21 +10,25 @@ type StoreProps = {
     rating: { count: number; rate: number };
     title: string;
   }[];
-  setTotalItems: (number: number) => void;
+  cart: {
+    [key: number]: number;
+  };
+  setCart: React.Dispatch<React.SetStateAction<{ [key: number]: number }>>;
 };
 
 const Store: React.FunctionComponent<StoreProps> = ({
   itemsArray,
-  setTotalItems,
+  cart,
+  setCart,
 }) => {
   return (
     <section className="store-section">
-      <h1>Store</h1>
       <section className="items-section">
         {itemsArray.map((elem, index) => (
           <StoreItem
             key={index}
-            setTotalItems={setTotalItems}
+            cart={cart}
+            setCart={setCart}
             {...elem}
           ></StoreItem>
         ))}

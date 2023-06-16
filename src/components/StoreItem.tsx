@@ -11,18 +11,20 @@ type ItemProps = {
   price: number;
   rating: { count: number; rate: number };
   title: string;
-  setTotalItems: (number: number) => void;
+  cart: {
+    [key: number]: number;
+  };
+  setCart: React.Dispatch<React.SetStateAction<{ [key: number]: number }>>;
 };
 
 const StoreItem: React.FunctionComponent<ItemProps> = ({
-  category,
-  description,
   id,
   image,
   price,
   rating,
   title,
-  setTotalItems,
+  cart,
+  setCart,
 }) => {
   return (
     <div className="item-card">
@@ -39,7 +41,7 @@ const StoreItem: React.FunctionComponent<ItemProps> = ({
           </div>
         </div>
       </div>
-      <AddItem setTotalItems={setTotalItems}></AddItem>
+      <AddItem id={id} cart={cart} setCart={setCart}></AddItem>
     </div>
   );
 };

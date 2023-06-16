@@ -1,52 +1,75 @@
-import { useState } from "react";
-import cart from "../assets/cart-shopping-solid.svg";
+import cartImg from "../assets/cart-shopping-solid.svg";
 
 type AddItemProps = {
-  setTotalItems: (number: number) => void;
+  id: number;
+  cart: {
+    [key: number]: number;
+  };
+  setCart: React.Dispatch<React.SetStateAction<{ [key: number]: number }>>;
 };
 
-const AddItem: React.FunctionComponent<AddItemProps> = ({ setTotalItems }) => {
-  const [items, setItems] = useState(0);
-
-  function handleIncrease(): void {
-    setItems((value) => value + 1);
-    setTotalItems((value) => value + 1);
+const AddItem: React.FunctionComponent<AddItemProps> = ({
+  id,
+  cart,
+  setCart,
+}) => {
+  //Add 1 item to the cart if there is none and add 1 to the current amount if it was previously in the cart
+  function handleIncrease(index: number): void {
+    setCart((prevCart) => ({
+      ...prevCart,
+      [index]: (prevCart[index] || 0) + 1,
+    }));
   }
 
-  function handleDecrease(): void {
-    setItems((value) => value - 1);
-    setTotalItems((value) => value - 1);
+  //Delete the item from the cart is the function is called with one element or decrease the amount by 1
+  function handleDecrease(index: number): void {
+    setCart((prevCart) => {
+      if (prevCart[index] === 1) {
+        const updatedCart = { ...prevCart };
+        delete updatedCart[index];
+        return updatedCart;
+      } else {
+        return {
+          ...prevCart,
+          [index]: (prevCart[index] || 0) - 1,
+        };
+      }
+    });
   }
 
-  function handleRemove(number: number): void {
-    setItems(0);
-    setTotalItems((value) => value - number);
+  //Delete the item from the cart
+  function handleRemove(index: number): void {
+    setCart((prevCart) => {
+      const updatedCart = { ...prevCart };
+      delete updatedCart[index];
+      return updatedCart;
+    });
   }
 
   return (
-    <button className="btn-add-items">
-      {items == 0 ? (
+    <section className="btn-add-items">
+      {cart[id] === 0 || !cart.hasOwnProperty(id) ? (
         <img
-          onClick={handleIncrease}
-          src={cart}
+          onClick={() => handleIncrease(id)}
+          src={cartImg}
           className="img-add-items"
           alt=""
         />
       ) : (
         <div>
-          <div className="items-amount">{items}</div>
-          <button onClick={handleDecrease} className="items-decrease">
+          <div className="items-amount">{cart[id]}</div>
+          <button onClick={() => handleDecrease(id)} className="items-decrease">
             -
           </button>
-          <button onClick={handleIncrease} className="items-increase">
+          <button onClick={() => handleIncrease(id)} className="items-increase">
             +
           </button>
-          <button onClick={() => handleRemove(items)} className="items-remove">
+          <button onClick={() => handleRemove(id)} className="items-remove">
             x
           </button>
         </div>
       )}
-    </button>
+    </section>
   );
 };
 

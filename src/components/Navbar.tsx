@@ -1,11 +1,17 @@
 import { NavLink } from "react-router-dom";
-import cart from "../assets/cart-shopping-solid.svg";
+import cartImg from "../assets/cart-shopping-solid.svg";
 
 type NavbarProps = {
-  totalItems: number;
+  cart: {
+    [key: number]: number;
+  };
 };
 
-const Navbar: React.FunctionComponent<NavbarProps> = ({ totalItems }) => {
+const Navbar: React.FunctionComponent<NavbarProps> = ({ cart }) => {
+  const totalItems = Object.keys(cart).reduce(
+    (sum, elem) => sum + cart[parseInt(elem, 10)],
+    0
+  );
   return (
     <header>
       <nav>
@@ -15,14 +21,13 @@ const Navbar: React.FunctionComponent<NavbarProps> = ({ totalItems }) => {
         <NavLink className="nav-links" to="/store">
           Store
         </NavLink>
-        <NavLink className="nav-links" to="/about">
-          About
-        </NavLink>
       </nav>
-      <button className="btn-cart">
-        <img src={cart} alt="" />
-        <div className="total-items">{totalItems}</div>
-      </button>
+      <NavLink className="nav-links" to="/cart">
+        <button className="btn-cart">
+          <img src={cartImg} alt="" />
+          <div className="total-items">{totalItems}</div>
+        </button>
+      </NavLink>
     </header>
   );
 };

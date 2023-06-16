@@ -1,14 +1,18 @@
 import { Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
 import Store from "./pages/Store";
-import About from "./pages/About";
+import Cart from "./pages/Cart";
 import Navbar from "./components/Navbar";
-import Footer from "./components/Footer";
 import { useEffect, useState } from "react";
 
 function App() {
   const [itemsArray, setItemsArray] = useState([]);
-  const [totalItems, setTotalItems] = useState(0);
+
+  // the initial state check if there is a previous cart saved to local storage
+  const [cart, setCart] = useState(() => {
+    const storedCart = localStorage.getItem("cart");
+    return storedCart ? JSON.parse(storedCart) : {};
+  });
 
   // Fetching items from https://fakestoreapi.com
   useEffect(() => {
@@ -17,11 +21,14 @@ function App() {
       .then((data) => setItemsArray(data));
   }, []);
 
-  console.log(itemsArray);
+  // Save cart data to local storage whenever it changes
+  useEffect(() => {
+    localStorage.setItem("cart", JSON.stringify(cart));
+  }, [cart]);
 
   return (
     <main>
-      <Navbar totalItems={totalItems}></Navbar>
+      <Navbar cart={cart}></Navbar>
       <Routes>
         <Route path="/" element={<Home></Home>}></Route>
         <Route
@@ -29,13 +36,18 @@ function App() {
           element={
             <Store
               itemsArray={itemsArray}
-              setTotalItems={setTotalItems}
+              cart={cart}
+              setCart={setCart}
             ></Store>
           }
         ></Route>
-        <Route path="/about" element={<About></About>}></Route>
+        <Route
+          path="/cart"
+          element={
+            <Cart itemsArray={itemsArray} cart={cart} setCart={setCart}></Cart>
+          }
+        ></Route>
       </Routes>
-      <Footer></Footer>
     </main>
   );
 }
